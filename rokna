@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="fo">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#97164f">
+<title>BMI-roknari · Ítróttur og heilsa C</title>
+<style>
+:root{color-scheme:light;--bmi-pink:#9b1753;--bmi-dark:#333;--bmi-muted:#686868;--bmi-line:#ddd;--bmi-soft:#faf4f7}
+*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--bmi-dark);font-family:"Segoe UI",Arial,sans-serif;line-height:1.6}button,input{font:inherit}a{color:var(--bmi-pink)}button,a,input{touch-action:manipulation}a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #156c9b;outline-offset:4px}[hidden]{display:none!important}
+.bmi-header{background:linear-gradient(110deg,#891441,#ae1c62);color:white;min-height:100px;padding:22px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;box-shadow:0 2px 3px #0002}.bmi-brand{display:flex;align-items:center;gap:20px;font-size:clamp(23px,2.6vw,38px);font-weight:700;line-height:1.2;letter-spacing:.3px}.bmi-logo{width:43px;height:34px;flex-shrink:0}.bmi-back{color:white;text-decoration:none;font-size:16px;font-weight:600;display:flex;align-items:center;gap:12px;padding:10px 0;line-height:1.4}.bmi-back:hover{text-decoration:underline}.bmi-back svg{width:22px;height:22px;flex-shrink:0}
+.bmi-shell{border-left:1px solid #e7e7e7;margin-left:60px;min-height:calc(100vh - 100px);box-shadow:-30px 0 0 29px #f8f8f8}.bmi-main{max-width:1110px;margin:auto;padding:44px 48px 64px}.bmi-breadcrumb{font-size:17px;color:#808080;margin:0 0 34px}.bmi-main h1{font-size:clamp(34px,4vw,46px);line-height:1.15;margin:0 0 20px;font-weight:650}.bmi-lead{font-size:20px;max-width:730px;margin:0 0 12px}.bmi-sub{color:var(--bmi-muted);font-size:16px;max-width:780px;margin:0 0 30px}.bmi-main h2{font-size:23px;line-height:1.3;margin:0 0 22px;font-weight:650}.bmi-panel{border:1px solid var(--bmi-line);border-top:4px solid var(--bmi-pink);display:grid;grid-template-columns:1fr 1fr;margin-top:32px}.bmi-form{padding:30px}.bmi-fields{display:grid;grid-template-columns:1fr 1fr;gap:20px}.bmi-field label{display:block;font-size:17px;font-weight:600;margin-bottom:8px}.bmi-input-wrap{position:relative}.bmi-field input{width:100%;height:58px;padding:10px 47px 10px 14px;border:1px solid #999;border-radius:3px;font-size:22px;background:#fff;color:#333}.bmi-field input::placeholder{color:#8b8b8b}.bmi-unit{position:absolute;right:14px;top:14px;color:#666;pointer-events:none}.bmi-field input[aria-invalid="true"]{border:2px solid #ae1948}.bmi-hint{font-size:13px;color:var(--bmi-muted);margin:7px 0 0}.bmi-actions{display:flex;gap:15px;align-items:center;margin-top:24px;flex-wrap:wrap}.bmi-calculate{border:0;border-radius:3px;background:var(--bmi-pink);color:#fff;padding:12px 25px;font-weight:600;min-height:48px;cursor:pointer}.bmi-calculate:hover{background:#77113f}.bmi-reset{background:none;border:0;color:#666;padding:12px 5px;text-decoration:underline;cursor:pointer;min-height:48px}.bmi-example{border:0;background:none;color:var(--bmi-pink);text-decoration:underline;text-underline-offset:3px;padding:9px 0;cursor:pointer;text-align:left;font-size:15px;min-height:44px;margin-top:9px}.bmi-privacy{font-size:13px;color:var(--bmi-muted);margin:10px 0 0}.bmi-error{font-size:15px;color:#8f1742;margin:16px 0 0}.bmi-result{background:var(--bmi-soft);padding:30px;border-left:1px solid var(--bmi-line);display:flex;flex-direction:column;justify-content:center;min-height:326px}.bmi-eyebrow{text-transform:uppercase;letter-spacing:1.5px;font-size:12px;font-weight:700;color:var(--bmi-pink);margin:0 0 12px}.bmi-result-number{font-size:70px;line-height:1.05;font-weight:650;letter-spacing:-2px;color:var(--bmi-pink);margin:0 0 12px;font-variant-numeric:tabular-nums}.bmi-result-title{font-size:22px;font-weight:600;margin:0 0 8px}.bmi-result-text{font-size:15px;color:#656065;margin:0;max-width:360px}.bmi-calculation{font-size:14px;margin:18px 0 0;padding-top:14px;border-top:1px solid #ddced5;font-variant-numeric:tabular-nums}.bmi-section{margin-top:42px}.bmi-formula{display:flex;align-items:center;gap:18px;margin:20px 0;font-size:21px}.bmi-fraction{display:inline-flex;flex-direction:column;text-align:center;line-height:1.45}.bmi-fraction span:first-child{border-bottom:1px solid #444;padding:0 12px 5px}.bmi-fraction span:last-child{padding:4px 12px 0}.bmi-explanation{font-size:16px;margin:0;max-width:760px}.bmi-table{width:100%;border-collapse:collapse;font-size:16px}.bmi-table th{text-align:left;background:#f5f5f5;padding:12px 16px;font-weight:600;border-bottom:2px solid #ddd}.bmi-table td{padding:12px 16px;border-bottom:1px solid #e5e5e5}.bmi-table th:first-child,.bmi-table td:first-child{width:43%;font-variant-numeric:tabular-nums}.bmi-table tr.is-current td{background:#f9edf3;color:#871447;font-weight:650}.bmi-table tr.is-current td:first-child{box-shadow:inset 4px 0 var(--bmi-pink)}.bmi-current{display:inline-block;margin-left:10px;font-size:12px;font-weight:600}.bmi-note{border-left:3px solid var(--bmi-pink);padding:0 0 0 20px;margin-top:32px}.bmi-note h2{font-size:19px;margin-bottom:10px}.bmi-note p{font-size:15px;margin:0 0 10px;max-width:800px}.bmi-source{font-size:13px;color:#777;margin:26px 0 0}.bmi-back-message{max-width:1014px;margin:16px auto;color:#8c1748;padding:0 24px}.bmi-footer{border-top:1px solid #e5e5e5;margin-top:40px;padding-top:20px;font-size:14px;color:#777}
+@media(min-width:1600px){.bmi-main{max-width:1220px;padding-top:52px}.bmi-header{padding:25px 32px;min-height:112px}}
+@media(max-width:850px){.bmi-header{align-items:flex-start;flex-direction:column;gap:12px;padding:20px 24px}.bmi-brand{font-size:28px}.bmi-back{font-size:15px;padding:4px 0}.bmi-shell{margin-left:0;border:0;box-shadow:none}.bmi-main{padding:32px 24px 44px}.bmi-breadcrumb{margin-bottom:25px}.bmi-form,.bmi-result{padding:24px}.bmi-fields{gap:12px}}
+@media(max-width:620px){.bmi-header{padding:20px}.bmi-brand{gap:12px;font-size:25px}.bmi-logo{width:32px;height:28px}.bmi-back{font-size:14px;gap:8px}.bmi-main{padding:28px 20px 36px}.bmi-breadcrumb{font-size:14px;margin-bottom:24px}.bmi-lead{font-size:18px}.bmi-sub{font-size:15px}.bmi-panel{grid-template-columns:1fr;margin-top:25px}.bmi-form,.bmi-result{padding:24px 20px}.bmi-result{border-left:0;border-top:1px solid var(--bmi-line);min-height:230px}.bmi-result-number{font-size:62px}.bmi-form h2{font-size:21px}.bmi-section{margin-top:32px}.bmi-table{font-size:14px}.bmi-table th,.bmi-table td{padding:12px 10px}.bmi-current{display:block;margin-left:0}.bmi-formula{font-size:18px;gap:12px}.bmi-field input{font-size:20px}.bmi-note{padding-left:15px}}
+@media(prefers-reduced-motion:no-preference){button,a{transition:background-color .15s,color .15s}}
+@media print{.bmi-header{background:#fff;color:#333;box-shadow:none;border-bottom:2px solid #999}.bmi-back,.bmi-actions,.bmi-example,.bmi-privacy{display:none}.bmi-shell{margin:0;box-shadow:none}.bmi-main{padding:20px;max-width:none}.bmi-panel,.bmi-note{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header class="bmi-header">
+ <div class="bmi-brand"><svg class="bmi-logo" aria-hidden="true" viewBox="0 0 50 40"><path fill="currentColor" d="M2 38V2h7l16 14L41 2h7v36H37V17L25 28 13 17v21z"/></svg><span>Ítróttur og heilsa C</span></div>
+ <a class="bmi-back" id="bmi-back" href="#"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m10 5-7 7 7 7M3 12h18"/></svg><span>Aftur til 2.5 Orka til venjingina</span></a>
+</header>
+<p id="bmi-back-message" class="bmi-back-message" role="status" hidden>Eingin undanfarin síða er at fara aftur til. Opna BMI-roknaran frá kapitlinum „2.5 Orka til venjingina“.</p>
+<div class="bmi-shell"><main class="bmi-main">
+<p class="bmi-breadcrumb">Ítróttur og heilsa C · 2.5 Orka til venjingina</p>
+<h1>Rokna BMI</h1>
+<p class="bmi-lead">BMI (Body Mass Index) lýsir lutfallið millum hædd og vekt.</p>
+<p class="bmi-sub">Skriva hædd og vekt í teigarnar niðanfyri. Tú kanst eisini brúka tølini hjá einum dømispersóni og kanna, hvussu BMI verður roknað.</p>
+<div class="bmi-panel">
+<form id="bmi-form" class="bmi-form" novalidate>
+<h2>Hædd og vekt</h2>
+<div class="bmi-fields">
+ <div class="bmi-field"><label for="bmi-height">Hædd</label><div class="bmi-input-wrap"><input id="bmi-height" name="height" type="text" inputmode="decimal" placeholder="180" autocomplete="off" spellcheck="false" required aria-describedby="bmi-height-hint bmi-error"><span class="bmi-unit">cm</span></div><p class="bmi-hint" id="bmi-height-hint">Í sentimetrum</p></div>
+ <div class="bmi-field"><label for="bmi-weight">Vekt</label><div class="bmi-input-wrap"><input id="bmi-weight" name="weight" type="text" inputmode="decimal" placeholder="75" autocomplete="off" spellcheck="false" required aria-describedby="bmi-weight-hint bmi-error"><span class="bmi-unit">kg</span></div><p class="bmi-hint" id="bmi-weight-hint">Í kilogrammum</p></div>
+</div>
+<p id="bmi-error" class="bmi-error" role="alert" hidden></p>
+<div class="bmi-actions"><button class="bmi-calculate" type="submit">Rokna BMI <span aria-hidden="true">→</span></button><button class="bmi-reset" type="reset">Nullstilla</button></div>
+<button class="bmi-example" id="bmi-example" type="button">Royn dømið: 180 cm og 75 kg</button>
+<p class="bmi-privacy">Tølini verða ikki goymd ella send víðari.</p>
+<noscript><p>JavaScript má vera virkið fyri at brúka roknaran. Tú kanst eisini rokna BMI við formlinum niðanfyri.</p></noscript>
+</form>
+<section class="bmi-result" aria-label="Úrslit" aria-live="polite" aria-atomic="true">
+<p class="bmi-eyebrow">Úrslit</p>
+<p class="bmi-result-number" id="bmi-number">—</p>
+<p class="bmi-result-title" id="bmi-category">Hvat er BMI?</p>
+<p class="bmi-result-text" id="bmi-result-text">Tá ið tú hevur skrivað hædd og vekt og trýst á „Rokna BMI“, sært tú úrslitið her.</p>
+<p class="bmi-calculation" id="bmi-calculation" hidden></p>
+</section>
+</div>
+<section class="bmi-section" aria-labelledby="bmi-formula-title">
+<h2 id="bmi-formula-title">Soleiðis verður BMI roknað</h2>
+<div class="bmi-formula" aria-label="BMI er kropsvekt í kilogrammum býtt við hædd í metrum í øðrum"><strong>BMI =</strong><span class="bmi-fraction" aria-hidden="true"><span>kropsvekt (kg)</span><span>hædd (m) × hædd (m)</span></span></div>
+<p class="bmi-explanation">Ein dømispersónur vigar 75 kg og er 180 cm høgur. Útrokningin er: <strong>75 / (1,80 × 1,80) ≈ 23,1.</strong></p>
+</section>
+<section class="bmi-section" aria-labelledby="bmi-table-title">
+<h2 id="bmi-table-title">Talva yvir BMI</h2>
+<p class="bmi-sub" id="bmi-table-note">Flokkingin niðanfyri er fyri vaksin, 20 ár og eldri.</p>
+<table class="bmi-table" aria-describedby="bmi-table-note"><thead><tr><th scope="col">BMI-interval</th><th scope="col">Flokking</th></tr></thead><tbody>
+<tr data-category="0"><td>Undir 18,5</td><td>Undirvekt</td></tr>
+<tr data-category="1"><td>18,5 til undir 25</td><td>Normalvekt</td></tr>
+<tr data-category="2"><td>25 til undir 30</td><td>Yvirvekt</td></tr>
+<tr data-category="3"><td>30 til undir 35</td><td>Fiti, stig 1</td></tr>
+<tr data-category="4"><td>35 til undir 40</td><td>Fiti, stig 2</td></tr>
+<tr data-category="5"><td>40 og hægri</td><td>Fiti, stig 3</td></tr>
+</tbody></table>
+</section>
+<aside class="bmi-note"><h2>BMI sigur ikki alt</h2><p>BMI skilur ikki millum vøddar og feitt. Stór vøddafylling kann tí geva eitt høgt BMI. Talið einsamalt kann ikki siga, hvussu heilsustøðan er.</p><p>Hjá børnum og ungum skal BMI tulkast í mun til aldur og kyn. Vaksnamannaflokkingin omanfyri skal tí ikki brúkast til at meta um teirra vekt. Í undirvísingini kunnu tit brúka ein vaksnan dømispersón.</p></aside>
+<p class="bmi-source">Kelda til útrokning og flokking: <a href="https://www.cdc.gov/bmi/adult-calculator/bmi-categories.html" target="_blank" rel="noopener noreferrer">CDC · Adult BMI Categories</a>.</p>
+<footer class="bmi-footer">Ítróttur og heilsa C · BMI-roknari</footer>
+</main></div>
+<script>
+(() => {
+ 'use strict';
+ const $ = id => document.getElementById(id);
+ const form = $('bmi-form'), height = $('bmi-height'), weight = $('bmi-weight');
+ const categories = ['Undirvekt','Normalvekt','Yvirvekt','Fiti, stig 1','Fiti, stig 2','Fiti, stig 3'];
+ const rows = [...document.querySelectorAll('[data-category]')];
+ const format = (number, digits = 1) => number.toFixed(digits).replace('.', ',');
+ const parse = value => /^\d+(?:[.,]\d+)?$/.test(value.trim()) ? Number(value.trim().replace(',', '.')) : NaN;
+ function clearHighlight() { rows.forEach(row => {row.classList.remove('is-current');row.querySelector('.bmi-current')?.remove();}); }
+ function clearResult() {
+  $('bmi-number').textContent = '—'; $('bmi-category').textContent = 'Hvat er BMI?';
+  $('bmi-result-text').textContent = 'Tá ið tú hevur skrivað hædd og vekt og trýst á „Rokna BMI“, sært tú úrslitið her.';
+  $('bmi-calculation').hidden = true; clearHighlight();
+ }
+ function clearErrors() { $('bmi-error').hidden = true; height.removeAttribute('aria-invalid'); weight.removeAttribute('aria-invalid'); }
+ function calculate(event) {
+  event?.preventDefault(); clearErrors(); clearResult();
+  const h = parse(height.value), w = parse(weight.value);
+  const errors = [];
+  if (!Number.isFinite(h) || h < 50 || h > 275) { errors.push('Skriva eina hædd millum 50 og 275 cm.'); height.setAttribute('aria-invalid','true'); }
+  if (!Number.isFinite(w) || w < 10 || w > 650) { errors.push('Skriva eina vekt millum 10 og 650 kg.'); weight.setAttribute('aria-invalid','true'); }
+  if(errors.length) { $('bmi-error').textContent = errors.join(' '); $('bmi-error').hidden = false; (height.hasAttribute('aria-invalid') ? height : weight).focus(); return; }
+  const metres = h / 100, bmi = w / (metres * metres);
